@@ -1,9 +1,11 @@
 # 2LYP Tokenomics
 
 Welcome to the official repository for the **2LYP Token** — a deflationary utility token designed to power the 2LYP decentralized ecosystem.
-![vesting-architecture](https://github.com/user-attachments/assets/ea9cf444-c42e-4016-afe4-dadb7813bed6)
 
 This repository documents the economic design and technical structure of the 2LYP Token:
+
+![vesting-architecture](./vesting-architecture.png)
+
 
 - 📄 Tokenomics report in LaTeX and PDF format  
 - 💡 Visual graphs for vesting schedules and burn mechanisms  
