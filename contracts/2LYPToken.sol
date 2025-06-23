@@ -16,6 +16,9 @@ contract TwoLYPToken is ERC20Burnable, Ownable {
     /// @notice The maximum supply cap of 2LYP tokens
     uint256 public immutable MAX_SUPPLY;
 
+    /// @notice The total burned tokens
+    uint256 public totalBurned;
+
     /// @notice Last faucet claim timestamp per address
     mapping(address => uint256) public lastFaucetClaim;
 
@@ -142,6 +145,15 @@ contract TwoLYPToken is ERC20Burnable, Ownable {
             revert MaxSupplyExceeded(totalSupply() + _amount);
         _mint(_to, _amount);
         emit TokensMinted(_to, _amount);
+    }
+
+    /**
+     * @notice burn tokens
+     * @param amount to be burned
+     */
+    function burn(uint256 amount) public override {
+        super.burn(amount * 10**18);
+        totalBurned += amount*10**18;
     }
 
     /**
