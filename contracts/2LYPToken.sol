@@ -16,6 +16,9 @@ contract TwoLYPToken is ERC20Burnable, Ownable {
     /// @notice The maximum supply cap of 2LYP tokens
     uint256 public immutable MAX_SUPPLY;
 
+    /// @notice The list of vesting addresses
+    address[] public vestingAddresses;
+
     /// @notice The total burned tokens
     uint256 public totalBurned;
 
@@ -199,6 +202,7 @@ contract TwoLYPToken is ERC20Burnable, Ownable {
     function _addVesting(address _beneficiary, uint256 _amount, uint256 _cliffDuration, uint256 _vestingDuration) internal {
         if (vestingList[_beneficiary].totalAllocated > 0 && _vestingDuration <= 0)
             revert AlreadyVested();
+
         vestingList[_beneficiary] = VestingInfo({
             totalAllocated: _amount,
             released: 0,
@@ -206,6 +210,7 @@ contract TwoLYPToken is ERC20Burnable, Ownable {
             cliff: _cliffDuration,
             duration: _vestingDuration
         });
+        vestingAddresses.push(_beneficiary); 
         emit VestingAdded(_beneficiary, _amount, _cliffDuration, _vestingDuration);
     }
 
@@ -214,6 +219,13 @@ contract TwoLYPToken is ERC20Burnable, Ownable {
      */
     function addVesting(address _beneficiary, uint256 _amount, uint256 _cliffDuration, uint256 _vestingDuration) external onlyOwner {
         _addVesting(_beneficiary, _amount, _cliffDuration, _vestingDuration);
+    }
+    
+    /**
+     * @notice Retrives all beneficiary vesting addresses
+     */
+    function getAllVestingAddresses() external view returns (address[] memory) {
+        return vestingAddresses;
     }
 
     /**
@@ -239,8 +251,7 @@ contract TwoLYPToken is ERC20Burnable, Ownable {
 
         info.released += unreleased;
         _mint(msg.sender, unreleased);
-        emit TokensReleased(msg.sender, unreleased);
-        
+        emit TokensReleased(msg.sender, unreleased); 
     }
 
     /**
